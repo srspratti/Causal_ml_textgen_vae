@@ -1,0 +1,19 @@
+name: disp_bert_defender
+channels:
+  - defaults
+dependencies:
+  - python=3.8
+  - jupyter
+  - torchaudio
+  - pytorch
+  - torchvision
+  - boto3
+  - hnswlib==0.5.1
+  - nltk
+  - scikit-learn
+  - requests
+  - tensorboardx
+  - pandas
+  - vadersentiment
+  - spacy
+prefix: /Users/sreeramasanjeevpratti/.conda/envs/disp_bert_defender
