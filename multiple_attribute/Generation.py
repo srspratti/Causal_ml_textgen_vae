@@ -152,7 +152,7 @@ def generate(date, epoch, sentiment, n_samples):
 
 
 #date = "2020-Mar-26-16:25:48"
-date = "2022-Apr-11-14:07:47" #imdb
+date = "2022-Apr-22-17:27:28"#"2022-Apr-21-18:22:07" #"2022-Apr-21-16:26:47" #"2022-Apr-21-12:56:12" #imdb
 #date = "2020-Mar-17-15:51:11"
 #bin/2020-May-09-06:35:11
 #date = "2020-May-09-06:35:11"
@@ -190,7 +190,8 @@ for i in g_sent:
     print(i)
 """
 
-generate(date, epoch,"Negative", 100)
+# generated_sent=generate(date, epoch,"Negative", 10)
+generated_sent=generate(date, epoch,"Positive", 10)
 # generated_sent = generate(date, epoch,"Negative", 10)
-# for i in generated_sent:
-#     print('i : \n')
+for i in generated_sent:
+    print('i : \n', i)

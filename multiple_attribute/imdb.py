@@ -28,7 +28,9 @@ class Processor(Dataset):
         self.rows = rows
         ## qua già test train e validation sono spezzati quindi magari possiamo farlo noi che li spezziamo
         self.raw_data_path = os.path.join(data_dir, dataset + '_' + split + ".csv")
+        print('raw_data_path; ', self.raw_data_path)
         self.raw_labels_path = os.path.join(data_dir, 'y'+ '_' + dataset + '_' + split +".csv")
+        print('raw_data_path; ', self.raw_labels_path)
         self.data_file = dataset + '_' + split + '.json'  # TODO da vedere cosa fare
         self.vocab_file = dataset + '_' + 'vocab.json'
         self.what=what
