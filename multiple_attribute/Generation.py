@@ -109,11 +109,12 @@ def generate(date, epoch, sentiment, n_samples):
     if not os.path.exists(load_checkpoint):
         raise FileNotFoundError(load_checkpoint)
 
-    if torch.cuda.is_available():
-        model = model.cuda()
-        device = "cuda"
-    else:
-        device = "cpu"
+    # if torch.cuda.is_available():
+    #     model = model.cuda()
+    #     device = "cuda"
+    # else:
+    #     device = "cpu"
+    device = "cpu"
 
     model.load_state_dict(torch.load(load_checkpoint, map_location=torch.device(device)))
     def attr_generation(n):
@@ -152,7 +153,7 @@ def generate(date, epoch, sentiment, n_samples):
 
 
 #date = "2020-Mar-26-16:25:48"
-date = "2022-Apr-22-17:27:28"#"2022-Apr-21-18:22:07" #"2022-Apr-21-16:26:47" #"2022-Apr-21-12:56:12" #imdb
+date = "2022-Apr-23-04:17:35"#"2022-Apr-21-18:22:07" #"2022-Apr-21-16:26:47" #"2022-Apr-21-12:56:12" #imdb
 #date = "2020-Mar-17-15:51:11"
 #bin/2020-May-09-06:35:11
 #date = "2020-May-09-06:35:11"
@@ -161,7 +162,7 @@ date = "2022-Apr-22-17:27:28"#"2022-Apr-21-18:22:07" #"2022-Apr-21-16:26:47" #"2
 #date = "2020-May-10-14:14:47"
 
 
-epoch = 29
+epoch = 0
 
 # TODO: only for testing single attribute
 """  
