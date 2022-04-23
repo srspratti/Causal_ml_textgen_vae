@@ -459,7 +459,7 @@ if __name__ == '__main__':
     parser.add_argument('--min_occ', type=int, default=2)
     parser.add_argument('-emb_size', '--embedding_size', type=int, default=300)
     parser.add_argument('-rnn', '--rnn_type', type=str, default="gru")
-    parser.add_argument('-ep', '--epochs', type=int, default=1)
+    parser.add_argument('-ep', '--epochs', type=int, default=30)
     parser.add_argument('-hs', '--hidden_size', type=int, default=256)
     parser.add_argument('-wd', '--word_dropout', type=float, default=0.8)
     parser.add_argument('-ed', '--embedding_dropout', type=float, default=0.5)
