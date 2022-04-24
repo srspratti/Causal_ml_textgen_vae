@@ -321,6 +321,8 @@ def main(args):
                 _, target_attr = label.max(dim=1)
                 #            print("attr_probs: {} target_att: {}".format(attr_probs.size(), target_attr.size()))
                 # print("attr_probs.size(): ",attr_probs.size())
+                print("label: ", type(label))
+                print("label size: ", label.size())
                 disc_loss = multiple_binary_cross_entropy(attr_probs, label)
                 # disc_loss = F.cross_entropy(attr_probs, target_attr) #attr_probs are logits
 
@@ -462,7 +464,7 @@ if __name__ == '__main__':
     parser.add_argument('--min_occ', type=int, default=2)
     parser.add_argument('-emb_size', '--embedding_size', type=int, default=300)
     parser.add_argument('-rnn', '--rnn_type', type=str, default="gru")
-    parser.add_argument('-ep', '--epochs', type=int, default=30)
+    parser.add_argument('-ep', '--epochs', type=int, default=1)
     parser.add_argument('-hs', '--hidden_size', type=int, default=256)
     parser.add_argument('-wd', '--word_dropout', type=float, default=0.8)
     parser.add_argument('-ed', '--embedding_dropout', type=float, default=0.5)
@@ -477,8 +479,8 @@ if __name__ == '__main__':
     parser.add_argument('--att_latent', type=int, default=100)
     parser.add_argument('--stop_annealing', type=int, default=3300)
     parser.add_argument('--save_model', type=bool, default=True)
-    parser.add_argument('--samples', type=int, default=2000)
-    parser.add_argument('--attr_size', type=int, default=2)
+    parser.add_argument('--samples', type=int, default=200)
+    parser.add_argument('--attr_size', type=int, default=5)
     parser.add_argument('--discr_type', type=str, default='fc')
     parser.add_argument('--h1_size', type=int, default=50)
     parser.add_argument('--h2_size', type=int, default=20)

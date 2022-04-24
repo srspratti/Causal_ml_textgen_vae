@@ -6,7 +6,7 @@ from sklearn.metrics import accuracy_score
 import torch
 import torch.nn.functional as F
 
-def multiple_binary_cross_entropy(output, target, attr_numb = 2):
+def multiple_binary_cross_entropy(output, target, attr_numb = 5):
 
     print("type of target: ", type(target))
     print("size of target: ", target.size())

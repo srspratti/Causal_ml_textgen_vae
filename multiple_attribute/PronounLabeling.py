@@ -2,8 +2,9 @@ import pandas as pd
 import spacy
 import numpy as np
 from nltk.tokenize import sent_tokenize
-# yelp_train = pd.read_csv("data/yelp_valid.csv")
-yelp_train = pd.read_csv("data/yelp_train.csv")
+from tqdm import tqdm
+yelp_train = pd.read_csv("data/yelp_valid.csv")
+# yelp_train = pd.read_csv("data/yelp_train.csv")
 
 nlp = spacy.load("en_core_web_sm")
 
@@ -39,8 +40,8 @@ def pos(sentence):
         #print("NEUTRAL: ",sentence)
         return [0,1,0]
 labels = []
-for idx, s in enumerate(yelp_train.text):
-    print(idx)
+for idx, s in enumerate(tqdm(yelp_train.text)):
+    # print(idx)
     label = pos(s)
     labels.append(label)
 
@@ -50,7 +51,7 @@ labels = np.asarray(labels)
 labels = pd.DataFrame({'Singular': labels[:,0],
                        'Neutral': labels[:,1],
                        'Plural': labels[:,2]})
-# split = "valid"
-split = "train"
+split = "valid"
+# split = "train"
 
 labels.to_csv("data/SingularPlural/y_yelp_"+split+".csv", index=False)

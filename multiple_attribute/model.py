@@ -83,6 +83,10 @@ class SentenceVAE(nn.Module):
 
         self.hidden2mean = nn.Linear(hidden_size * self.hidden_factor, latent_size)
         self.hidden2logv = nn.Linear(hidden_size * self.hidden_factor, latent_size)
+        print("latent_size: ", latent_size)
+        print("attribute_size: ", attribute_size)
+        print("hidden_size: ", hidden_size)
+        print("hidden_factor : ", self.hidden_factor)
         self.latent2hidden = nn.Linear(latent_size + attribute_size, hidden_size * self.hidden_factor)
         self.outputs2vocab = nn.Linear(hidden_size * (2 if bidirectional else 1), vocab_size)
         self.back = back
