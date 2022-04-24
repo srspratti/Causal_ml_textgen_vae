@@ -123,7 +123,7 @@ def generate(date, epoch, attribute_list, n_samples, dataset="imdb"): # TODO : u
     model.load_state_dict(torch.load(load_checkpoint, map_location=torch.device(device)))
     def attr_generation(n):
         labels = np.random.randint(2, size=n)
-        print("labels ", labels)
+        # print("labels ", labels)
         enc = OneHotEncoder(handle_unknown='ignore')
         labels = np.reshape(labels, (len(labels), 1))
         enc.fit(labels)
@@ -158,7 +158,7 @@ def generate(date, epoch, attribute_list, n_samples, dataset="imdb"): # TODO : u
 
 
 #date = "2020-Mar-26-16:25:48"
-date = "2022-Apr-23-12:42:55"#2022-Apr-23-04:17:35"#"2022-Apr-21-18:22:07" #"2022-Apr-21-16:26:47" #"2022-Apr-21-12:56:12" #imdb
+date = "2022-Apr-24-17:54:51"#2022-Apr-23-04:17:35"#"2022-Apr-21-18:22:07" #"2022-Apr-21-16:26:47" #"2022-Apr-21-12:56:12" #imdb
 #date = "2020-Mar-17-15:51:11"
 #bin/2020-May-09-06:35:11
 #date = "2020-May-09-06:35:11"
@@ -168,15 +168,18 @@ date = "2022-Apr-23-12:42:55"#2022-Apr-23-04:17:35"#"2022-Apr-21-18:22:07" #"202
 
 
 
-epoch =  29 #0
+epoch = 0
 
 # TODO: only for testing single attribute
 
-samples = 3000
+samples = 10
 #yelp
-label = ["PresPosPlural", "PresPosSingular", "PresPosNeutral",
-"PastPosPlural","PastPosSingular","PastPosNeutral", "PresNegPlural",
-"PresNegSingular", "PresNegNeutral", "PastNegPlural", "PastNegSingular",  "PastNegNeutral"]
+label = ["possingular", "negsingular", "posneutral",
+"negneutral","posplural","negplural"]
+
+# label = ["PresPosPlural", "PresPosSingular", "PresPosNeutral",
+# "PastPosPlural","PastPosSingular","PastPosNeutral", "PresNegPlural",
+# "PresNegSingular", "PresNegNeutral", "PastNegPlural", "PastNegSingular",  "PastNegNeutral"]
 
 
 #imdb
@@ -187,18 +190,19 @@ label = ["PresPosPlural", "PresPosSingular", "PresPosNeutral",
 generated_sentences = []
 y_generated = []
 for l in label:
-    print(l)
+    print("label: ",l)
     g_sent = generate(date, epoch, l, samples, dataset="imdb")
     y_gen = [l]*len(g_sent)
     generated_sentences.append(g_sent)
     y_generated.append(y_gen)
+    print("sentence: ", g_sent)
 
-for i in g_sent:
-    print(i)
+# for i in g_sent:
+#     print("g_sent \n", i)
 
 
 # generated_sent=generate(date, epoch,"Negative", 10)
 # generated_sent=generate(date, epoch,"Positive", 10)
 # generated_sent = generate(date, epoch,"Negative", 10)
-# for i in generated_sent:
-#     print('i : \n', i)
+# for i in generated_sentences:
+#     print('generated_sentences : \n', i)
