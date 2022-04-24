@@ -10,8 +10,8 @@ from sklearn.preprocessing import OneHotEncoder
 
 
 
-# def generate(date, epoch, attribute_list, n_samples, dataset="imdb"): # TODO : uncomment - only for testing single attribute
-def generate(date, epoch, sentiment, n_samples):
+def generate(date, epoch, attribute_list, n_samples, dataset="imdb"): # TODO : uncomment - only for testing single attribute
+#def generate(date, epoch, sentiment, n_samples):
 
     '''
 
@@ -52,7 +52,7 @@ def generate(date, epoch, sentiment, n_samples):
     back = exp_descr["back"]
     attribute_size = exp_descr["attr_size"]
     wd_type = exp_descr["word_drop_type"]
-    num_samples = 2
+    num_samples = 2 # TODO : is it to match the attr_size ?
     save_model_path = 'bin'
     ptb = False
     """
@@ -98,7 +98,7 @@ def generate(date, epoch, sentiment, n_samples):
         num_layers=num_layers,
         cuda = cuda2,
         bidirectional=bidirectional,
-        attribute_size=2, # TODO : To change to 7 , 2 only for testing
+        attribute_size=5, # TODO : To change to 7 , 2 only for testing
         word_dropout_type='static',
         back=back
     )
@@ -140,8 +140,8 @@ def generate(date, epoch, sentiment, n_samples):
     labels = []
     generated = []
     for i in range(n_samples):
-        # samples, z, l = model.inference(attribute_list)
-        samples, z, l = model.inference_sent(sentiment)
+        samples, z, l = model.inference(attribute_list)
+        # samples, z, l = model.inference_sent(sentiment)
         s = idx2word(samples, i2w=i2w, pad_idx=w2i['<pad>'])
         #print(sentiment_analyzer_scores(s[0]))
         #if sentiment_analyzer_scores(s[0])[1] == sentiment:
@@ -171,7 +171,7 @@ date = "2022-Apr-23-12:42:55"#2022-Apr-23-04:17:35"#"2022-Apr-21-18:22:07" #"202
 epoch =  29 #0
 
 # TODO: only for testing single attribute
-"""  
+
 samples = 3000
 #yelp
 label = ["PresPosPlural", "PresPosSingular", "PresPosNeutral",
@@ -180,8 +180,8 @@ label = ["PresPosPlural", "PresPosSingular", "PresPosNeutral",
 
 
 #imdb
-label = ["pastpossingular", "pastposplural", "prespossingular", "presposplural",
-         "pastnegsingular", "pastnegplural", "presnegsingular", "presnegplural"]
+#label = ["pastpossingular", "pastposplural", "prespossingular", "presposplural",
+ #        "pastnegsingular", "pastnegplural", "presnegsingular", "presnegplural"]
 
 
 generated_sentences = []
@@ -195,10 +195,10 @@ for l in label:
 
 for i in g_sent:
     print(i)
-"""
 
-generated_sent=generate(date, epoch,"Negative", 10)
+
+# generated_sent=generate(date, epoch,"Negative", 10)
 # generated_sent=generate(date, epoch,"Positive", 10)
 # generated_sent = generate(date, epoch,"Negative", 10)
-for i in generated_sent:
-    print('i : \n', i)
+# for i in generated_sent:
+#     print('i : \n', i)

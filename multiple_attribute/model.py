@@ -444,12 +444,39 @@ class SentenceVAE(nn.Module):
             if attribute_list == "presnegplural":
                 b = np.array([[0, 0, 1, 1, 0, 1, 0], [0, 0, 1, 1, 0, 1, 0]]).astype(np.float32)
 
+            # Attribute list for [ Positive, Negative, Singular, Neutral, Plural]
+            """
+                possingular -> 1 0 1 0 0 
 
+                negsingular -> 0 1 1 0 0
+                
+                posneutral -> 1 0 0 1 0
+                
+                negneutral -> 0 1 0 1 0
+                
+                posplural -> 1 0 0 0 1
+                
+                negplural -> 0 1 0 0 1
+            """
+            if attribute_list == "possingular":
+                b = np.array([[1, 0, 1, 0, 0], [1, 0, 1, 0, 0]]).astype(np.float32)
 
+            if attribute_list == "negsingular":
+                b = np.array([[0, 1, 1, 0, 0], [0, 1, 1, 0, 0]]).astype(np.float32)
 
+            if attribute_list == "posneutral":
+                b = np.array([[1, 0, 0, 1, 0], [1, 0, 0, 1, 0]]).astype(np.float32)
 
+            if attribute_list == "negneutral":
+                b = np.array([[0, 1, 0, 1, 0], [0, 1, 0, 1, 0]]).astype(np.float32)
 
+            if attribute_list == "posplural":
+                b = np.array([[1, 0, 0, 0, 1], [1, 0, 0, 0, 1]]).astype(np.float32)
 
+            if attribute_list == "negplural":
+                b = np.array([[0, 1, 0, 0, 1], [0, 1, 0, 0, 1]]).astype(np.float32)
+
+            # For Tense , Sentiment and Pronoun
 
             if attribute_list == "PresPosPlural":
                 b = np.array([[0, 0, 1, 0, 1, 1, 0], [0, 0, 1, 0, 1, 1, 0]]).astype(np.float32)
