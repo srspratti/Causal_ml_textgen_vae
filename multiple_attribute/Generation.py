@@ -119,6 +119,7 @@ def generate(date, epoch, sentiment, n_samples):
     model.load_state_dict(torch.load(load_checkpoint, map_location=torch.device(device)))
     def attr_generation(n):
         labels = np.random.randint(2, size=n)
+        print("labels ", labels)
         enc = OneHotEncoder(handle_unknown='ignore')
         labels = np.reshape(labels, (len(labels), 1))
         enc.fit(labels)
@@ -142,7 +143,7 @@ def generate(date, epoch, sentiment, n_samples):
         #if sentiment_analyzer_scores(s[0])[1] == sentiment:
         generated.append(s[0])
         # print(s[0])
-        print(s)
+        # print(s)
 
         #labels.append(sentiment_analyzer_scores(s[0])[0])
         #print(*idx2word(samples, i2w=i2w, pad_idx=w2i['<pad>']), sep='\n')
@@ -153,7 +154,7 @@ def generate(date, epoch, sentiment, n_samples):
 
 
 #date = "2020-Mar-26-16:25:48"
-date = "2022-Apr-23-04:17:35"#"2022-Apr-21-18:22:07" #"2022-Apr-21-16:26:47" #"2022-Apr-21-12:56:12" #imdb
+date = "2022-Apr-23-12:42:55"#2022-Apr-23-04:17:35"#"2022-Apr-21-18:22:07" #"2022-Apr-21-16:26:47" #"2022-Apr-21-12:56:12" #imdb
 #date = "2020-Mar-17-15:51:11"
 #bin/2020-May-09-06:35:11
 #date = "2020-May-09-06:35:11"
@@ -162,7 +163,7 @@ date = "2022-Apr-23-04:17:35"#"2022-Apr-21-18:22:07" #"2022-Apr-21-16:26:47" #"2
 #date = "2020-May-10-14:14:47"
 
 
-epoch = 0
+epoch =  29 #0
 
 # TODO: only for testing single attribute
 """  
@@ -191,8 +192,8 @@ for i in g_sent:
     print(i)
 """
 
-# generated_sent=generate(date, epoch,"Negative", 10)
-generated_sent=generate(date, epoch,"Positive", 10)
+generated_sent=generate(date, epoch,"Negative", 10)
+# generated_sent=generate(date, epoch,"Positive", 10)
 # generated_sent = generate(date, epoch,"Negative", 10)
 for i in generated_sent:
     print('i : \n', i)

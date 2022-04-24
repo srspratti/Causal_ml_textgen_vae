@@ -507,10 +507,10 @@ class SentenceVAE(nn.Module):
             for i in range(1):
                 z_f = torch.cat((z_f, z), dim=0)
 
-            if sentiment == "Positive":
+            if sentiment == "Negative":
 
                 b = np.array([[0, 1], [0, 1]]).astype(np.float32)
-            if sentiment == "Negative":
+            if sentiment == "Positive":
                 b = np.array([[1, 0], [1, 0]]).astype(np.float32)
             c = torch.from_numpy(b)
             z = torch.cat((z_f, c), dim=1)
