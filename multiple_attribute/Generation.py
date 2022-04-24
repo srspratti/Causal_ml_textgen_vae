@@ -187,8 +187,29 @@ label = ["possingular", "negsingular", "posneutral",
  #        "pastnegsingular", "pastnegplural", "presnegsingular", "presnegplural"]
 
 
+def label_OneHotEncode(label):
+
+    if label == "possingular":
+        return [1, 0, 1, 0, 0]
+
+    if label == "negsingular":
+        return [0, 1, 1, 0, 0]
+
+    if label == "posneutral":
+        return [1, 0, 0, 1, 0]
+
+    if label == "negneutral":
+        return [0, 1, 0, 1, 0]
+
+    if label == "posplural":
+        return [1, 0, 0, 0, 1]
+
+    if label == "negplural":
+        return [0, 1, 0, 0, 1]
+
 generated_sentences = []
 y_generated = []
+labels_true=[]
 for l in label:
     print("label: ",l)
     g_sent = generate(date, epoch, l, samples, dataset="imdb")
@@ -196,6 +217,21 @@ for l in label:
     generated_sentences.append(g_sent)
     y_generated.append(y_gen)
     print("sentence: ", g_sent)
+
+    # label OneHotEncoding
+    labels_true.append(label_OneHotEncode((l)))
+
+labels_true = np.asarray(labels_true)
+labels_true = pd.DataFrame({'Positive': labels_true[:,0],
+                        'Negative': labels_true[:,1],
+                       'Singular': labels_true[:,2],
+                       'Neutral': labels_true[:,3],
+                       'Plural': labels_true[:,4]})
+
+generated_sentences = pd.DataFrame({'text': generated_sentences[:,0]})
+
+labels_true.to_csv("data/y_yelp_generated.csv", index=False)
+generated_sentences.to_csv("data/yelp_generated.csv", index=False)
 
 # for i in g_sent:
 #     print("g_sent \n", i)
