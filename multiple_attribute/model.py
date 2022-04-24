@@ -6,6 +6,8 @@ import time
 import json
 from Embedder import Embedder
 import numpy as np
+import torch.nn.functional as F # TODO : loss_rec
+from torch.nn.functional import normalize
 
 
 
@@ -203,8 +205,8 @@ class SentenceVAE(nn.Module):
         # TODO : ReCon loss troubleshooting - remove after resolution
         # what are input id's from forward - Bert2LatentConnector
         # are they same as input_sequence ?
-        print("input_sequence: ", input_sequence)
-        print(" z from CGA : comparing with latent_z from Causal Lens: ", z)
+        #print("input_sequence: ", input_sequence)
+        #print(" z from CGA : comparing with latent_z from Causal Lens: ", z)
 
         # TODO : SP : Re-Construction Loss
         """
@@ -326,7 +328,7 @@ class SentenceVAE(nn.Module):
         logp = nn.functional.log_softmax(out, dim=-1)
         logp = logp.view(b, s, self.embedding.num_embeddings)
 
-
+        """
         if self.back:
             back_prob = back_prob.view(b, s, self.embedding.num_embeddings)
             back_input = torch.argmax(back_prob, dim=2)
@@ -334,8 +336,50 @@ class SentenceVAE(nn.Module):
             back_input_embedding = self.embedding(back_input)
             z_back, mean_back, logv_back = self.encoder(back_input_embedding, sorted_lengths, batch_size)
             loss = torch.abs(z - z_back)
+            print("type of loss: ", type(loss))
+            print("shape of loss: ", loss.size())
             l1_loss = loss.sum()/batch_size
             return logp, mean, logv, z, z_a,l1_loss
+    
+        if self.back: # TODO : loss_rec
+            # loss_rec=0
+            back_prob = back_prob.view(b, s, self.embedding.num_embeddings)
+            back_input = torch.argmax(back_prob, dim=2)
+            back_input = back_input[sorted_idx]
+            back_input_embedding = self.embedding(back_input)
+            z_back, mean_back, logv_back = self.encoder(back_input_embedding, sorted_lengths, batch_size)
+            # print("z_back size: ", z_back.size())
+            # print("z size: ", z.size())
+            # print("z_back : ", z_back)
+            #z_back_normal = normalize(z_back, p=2.0, dim=0)
+            # mins = z_back.min(dim=1, keepdim=True)
+            # maxs = z_back.max(dim=1, keepdim=True)
+            # print("mins: ", mins)
+            # print("maxs: ", maxs)
+            # z_back_normal = (z_back - mins) / (maxs - mins)
+            z_back -= z_back.min(1, keepdim=True)[0]
+            z_back /= z_back.max(1, keepdim=True)[0]
+            # print("z_back_normal : ", z_back)
+            loss_rec = F.binary_cross_entropy(z_back, z.detach())
+            loss_rec_mean = loss_rec.sum()/batch_size
+            print("loss_rec_mean: ", loss_rec_mean.size())
+            print("loss_rec_mean: ", loss_rec_mean)
+            return logp, mean, logv, z, z_a,loss_rec_mean
+        """
+        if self.back: # TODO : Context aware loss + loss_rec
+            # loss_rec=0
+            back_prob = back_prob.view(b, s, self.embedding.num_embeddings)
+            back_input = torch.argmax(back_prob, dim=2)
+            back_input = back_input[sorted_idx]
+            back_input_embedding = self.embedding(back_input)
+            z_back, mean_back, logv_back = self.encoder(back_input_embedding, sorted_lengths, batch_size)
+            loss = torch.abs(z - z_back)
+            l1_loss = loss.sum() / batch_size
+            z_back -= z_back.min(1, keepdim=True)[0]
+            z_back /= z_back.max(1, keepdim=True)[0]
+            loss_rec = F.binary_cross_entropy(z_back, z.detach())
+            loss_rec_mean = loss_rec.sum()/batch_size
+            return logp, mean, logv, z, z_a,l1_loss, loss_rec_mean
 
         return logp, mean, logv, z, z_a, None
 

@@ -83,6 +83,7 @@ split = ['train','valid']
 
 #TRAINING
 data_train = pd.read_csv("data/yelp_train.csv")
+print("type of data_train: ", type(data_train))
 labels_train = labeling(data_train)
 X_train = drop_indexes(data_train, labels_train)
 y_train = hot_one(labels_train)
