@@ -71,7 +71,11 @@ def generate(date, epoch, sentiment, n_samples):
     else:
         vocab_dir = '/yelp_vocab.json'
 
-    with open("bin/" + date+"/"+ vocab_dir, 'r') as file:
+    # with open("bin/" + date+"/"+ vocab_dir, 'r') as file:
+    #     vocab = json.load(file)
+
+    with open("data/"+"/"+ vocab_dir, 'r') as file:
+        print("file : ", file)
         vocab = json.load(file)
 
 
@@ -161,6 +165,7 @@ date = "2022-Apr-23-12:42:55"#2022-Apr-23-04:17:35"#"2022-Apr-21-18:22:07" #"202
 #date = "2020-May-02-11:06:34"
 #date = "2020-May-10-10:30:35"
 #date = "2020-May-10-14:14:47"
+
 
 
 epoch =  29 #0
