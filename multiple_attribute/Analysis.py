@@ -336,8 +336,10 @@ def main(args):
                 #######################################################    Varitional-AE TRAINING   #####################################################################
                 #########################################################################################################################################################
                 # 5: forward pass vae and discriminator
-                logp, mean, logv, z, z_a, l1_loss = model(batch['input'].to(device), batch['length'].to(device),
-                                                          batch['label'].to(device), step)
+                # logp, mean, logv, z, z_a, l1_loss = model(batch['input'].to(device), batch['length'].to(device),
+                                                          # batch['label'].to(device), step)
+                logp, mean, logv, z, z_a, l1_loss, loss_rec = model(batch['input'].to(device), batch['length'].to(device),
+                                                          batch['label'].to(device), step) # TODO : returning loss_rec
                 # TODO : Why fader_loss and disc_loss are different ?
                 # TODO : Why z is being calculated two times ?
 
@@ -371,7 +373,8 @@ def main(args):
                                                                         x_step=50000, x=step, epoch=0,
                                                                         warmup=args.discr_warmup)
                 if args.back == "True":
-                    fader_loss = (vae_loss + args.delta * l1_loss) - (disc_weight * fader_discr_loss)
+                    # fader_loss = (vae_loss + args.delta * l1_loss) - (disc_weight * fader_discr_loss)
+                    fader_loss = (vae_loss + args.delta * l1_loss) - (disc_weight * fader_discr_loss) + loss_rec# TODO : Adding loss_rec
                 else:
                     fader_loss = vae_loss - (disc_weight * fader_discr_loss)
 
@@ -474,7 +477,7 @@ if __name__ == '__main__':
     parser.add_argument('--att_latent', type=int, default=100)
     parser.add_argument('--stop_annealing', type=int, default=3300)
     parser.add_argument('--save_model', type=bool, default=True)
-    parser.add_argument('--samples', type=int, default=-1)
+    parser.add_argument('--samples', type=int, default=2000)
     parser.add_argument('--attr_size', type=int, default=2)
     parser.add_argument('--discr_type', type=str, default='fc')
     parser.add_argument('--h1_size', type=int, default=50)
@@ -485,7 +488,7 @@ if __name__ == '__main__':
     parser.add_argument('-wd_type', '--word_drop_type', type=str, default='static')
     parser.add_argument('--delta', type=float, default=1)
     parser.add_argument('--hs_rnn_discr', type=int, default=50)
-    parser.add_argument('--back', type=str, default="False")
+    parser.add_argument('--back', type=str, default="True")
     parser.add_argument('--discr_warmup', type=int, default=20000)
     args = parser.parse_args()
 
