@@ -31,7 +31,7 @@ def sentiment_analyzer_scores(sentence):
 
 
 # yelp_train = pd.read_csv("data/yelp_valid.csv")
-yelp_generated = pd.read_csv("data/yelp_generated.csv")
+# yelp_generated = pd.read_csv("data/yelp_generated.csv")
 yelp_generated_x = pd.read_csv("data/yelp_generated.csv") #yelp_generated['text'] 
 yelp_generated_y = pd.read_csv("data/y_yelp_generated.csv") #yelp_generated['labels']
 
@@ -70,8 +70,9 @@ def pos(sentence):
         return [0,1,0]
 
 labels = []
-for idx, s in enumerate(tqdm(yelp_generated_x)):
+for idx, s in enumerate(yelp_generated_x.text):
     # print(idx)
+    # print("s: ", s)
     label_sent = sentiment_analyzer_scores(s)
     label = pos(s)
     label_sent.extend(label)
@@ -86,7 +87,7 @@ labels = np.asarray(labels)
 #                        'Neutral': labels[:,1],
 #                        'Plural': labels[:,2]})
 
-labels = pd.DataFrame({'Positive': labels[:,0],
+labels_df = pd.DataFrame({'Positive': labels[:,0],
                         'Negative': labels[:,1],
                        'Singular': labels[:,2],
                        'Neutral': labels[:,3],
@@ -94,7 +95,7 @@ labels = pd.DataFrame({'Positive': labels[:,0],
 
 name = "calculated_sent_pronoun"
 
-labels.to_csv("data/y_yelp_"+name+".csv", index=False)
+labels_df.to_csv("data/y_yelp_"+name+".csv", index=False)
 
 #----------------------------------------------Calculate the accuracy for multi-label classification 
 
@@ -128,8 +129,11 @@ def hamming_score(y_true, y_pred, normalize=True, sample_weight=None):
         acc_list.append(tmp_a)
     return np.mean(acc_list)
 
+
+
 y_true = yelp_generated_y.copy() 
 y_pred = labels.copy()
+y_true = np.asarray(y_true)
 
 print('Hamming score: {0}'.format(hamming_score(y_true, y_pred))) # 0.375 (= (0.5+1+0+0)/4)
 
