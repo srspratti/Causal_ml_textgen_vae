@@ -158,7 +158,7 @@ def generate(date, epoch, attribute_list, n_samples, dataset="imdb"): # TODO : u
 
 
 #date = "2020-Mar-26-16:25:48"
-date = "2022-Apr-24-17:54:51"#2022-Apr-23-04:17:35"#"2022-Apr-21-18:22:07" #"2022-Apr-21-16:26:47" #"2022-Apr-21-12:56:12" #imdb
+date = "2022-Apr-24-20:03:16" #"2022-Apr-24-17:54:51"#2022-Apr-23-04:17:35"#"2022-Apr-21-18:22:07" #"2022-Apr-21-16:26:47" #"2022-Apr-21-12:56:12" #imdb
 #date = "2020-Mar-17-15:51:11"
 #bin/2020-May-09-06:35:11
 #date = "2020-May-09-06:35:11"
@@ -168,11 +168,11 @@ date = "2022-Apr-24-17:54:51"#2022-Apr-23-04:17:35"#"2022-Apr-21-18:22:07" #"202
 
 
 
-epoch = 0
+epoch = 29
 
 # TODO: only for testing single attribute
 
-samples = 10
+samples = 100
 #yelp
 label = ["possingular", "negsingular", "posneutral",
 "negneutral","posplural","negplural"]
@@ -209,6 +209,7 @@ def label_OneHotEncode(label):
 
 generated_sentences = []
 y_generated = []
+generated_sentences_all=[]
 labels_true=[]
 for l in label:
     print("label: ",l)
@@ -219,7 +220,9 @@ for l in label:
     print("sentence: ", g_sent)
 
     # label OneHotEncoding
-    labels_true.append(label_OneHotEncode((l)))
+    # labels_samples = label_OneHotEncode(l)
+    for i in range(samples):
+        labels_true.append(label_OneHotEncode((l)))
 
 labels_true = np.asarray(labels_true)
 labels_true = pd.DataFrame({'Positive': labels_true[:,0],
@@ -228,7 +231,10 @@ labels_true = pd.DataFrame({'Positive': labels_true[:,0],
                        'Neutral': labels_true[:,3],
                        'Plural': labels_true[:,4]})
 
-generated_sentences = pd.DataFrame({'text': generated_sentences[:,0]})
+print("generated_sentences", type(generated_sentences))
+generated_sentences_all = [str(k).replace('<eos>', '').strip() for i in generated_sentences for k in i]
+print("generated_sentences_all : ", generated_sentences_all)
+generated_sentences = pd.DataFrame({'text': generated_sentences_all})
 
 labels_true.to_csv("data/y_yelp_generated.csv", index=False)
 generated_sentences.to_csv("data/yelp_generated.csv", index=False)
